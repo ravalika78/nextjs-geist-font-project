@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ job.title }} - {{ job.company.name }} - GET-AI{% endblock %}
+
+{% block content %}
+<div class="py-8 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Job Header -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ job.title }}</h1>
+                    <p class="text-xl text-gray-600 mb-2">{{ job.company.name }}</p>
+                    <p class="text-gray-500">{{ job.location }}</p>
+                </div>
+                {% if job.company.logo %}
+                <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-20 h-20 rounded">
+                {% else %}
+                <div class="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
+                    <span class="text-gray-500 text-lg">{{ job.company.name|slice:":2"|upper }}</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mt-4 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">{{ job.get_job_type_display }}</span>
+                {% if job.salary_min and job.salary_max %}
+                <span class="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">
+                    ${{ job.salary_min|floatformat:0 }}k - ${{ job.salary_max|floatformat:0 }}k
+                </span>
+                {% endif %}
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">{{ job.created_at|timesince }} ago</span>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-6">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <!-- Job Description -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Job Description</h2>
+                    <div class="prose max-w-none">
+                        {{ job.description|linebreaks }}
+                    </div>
+                </div>
+
+                <!-- Requirements -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Requirements</h2>
+                    <div class="prose max-w-none">
+                        {{ job.requirements|linebreaks }}
+                    </div>
+                </div>
+
+                <!-- Benefits -->
+                {% if job.benefits %}
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Benefits</h2>
+                    <div class="prose max-w-none">
+                        {{ job.benefits|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Apply Button -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <a href="/jobs/{{ job.id }}/apply/" class="w-full block text-center px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                        Apply Now
+                    </a>
+                    <p class="text-sm text-gray-600 mt-2 text-center">
+                        Posted {{ job.created_at|timesince }} ago
+                    </p>
+                </div>
+
+                <!-- Company Info -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">About {{ job.company.name }}</h3>
+                    <p class="text-gray-600 mb-4">{{ job.company.description|truncatewords:30 }}</p>
+                    <a href="/companies/{{ job.company.id }}/" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                        View Company Profile →
+                    </a>
+                </div>
+
+                <!-- Job Details -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Job Details</h3>
+                    <dl class="space-y-3">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Job Type</dt>
+                            <dd class="text-sm text-gray-900">{{ job.get_job_type_display }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Location</dt>
+                            <dd class="text-sm text-gray-900">{{ job.location }}</dd>
+                        </div>
+                        {% if job.salary_min and job.salary_max %}
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Salary Range</dt>
+                            <dd class="text-sm text-gray-900">${{ job.salary_min|floatformat:0 }}k - ${{ job.salary_max|floatformat:0 }}k</dd>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Posted</dt>
+                            <dd class="text-sm text-gray-900">{{ job.created_at|date:"F j, Y" }}</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
