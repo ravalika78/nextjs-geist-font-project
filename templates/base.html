@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GET-AI - Find Your Dream Job Today{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">AI</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">GET-AI</span>
+                    </div>
+                    <nav class="hidden md:flex space-x-8">
+                        <a href="/" class="text-gray-700 hover:text-gray-900 font-medium">Home</a>
+                        <a href="/jobs/" class="text-gray-700 hover:text-gray-900 font-medium">Find Jobs</a>
+                        <a href="/companies/" class="text-gray-700 hover:text-gray-900 font-medium">Companies</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <a href="/profile/" class="text-gray-700 hover:text-gray-900 font-medium">Profile</a>
+                        <a href="/admin/logout/" class="text-gray-700 hover:text-gray-900 font-medium">Logout</a>
+                    {% else %}
+                        <a href="/admin/login/" class="text-gray-700 hover:text-gray-900 font-medium">Login</a>
+                        <a href="/admin/" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Sign up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">GET-AI</h3>
+                    <p class="text-gray-400">Find your dream job with AI-powered tools</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-4">For Job Seekers</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/jobs/" class="hover:text-white">Browse Jobs</a></li>
+                        <li><a href="/profile/" class="hover:text-white">Create Profile</a></li>
+                        <li><a href="#" class="hover:text-white">Career Resources</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-4">For Employers</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/admin/" class="hover:text-white">Post a Job</a></li>
+                        <li><a href="#" class="hover:text-white">Search Resumes</a></li>
+                        <li><a href="#" class="hover:text-white">Recruiting Solutions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 GET-AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
