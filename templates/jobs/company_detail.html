@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ company.name }} - GET-AI{% endblock %}
+
+{% block content %}
+<div class="py-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Company Header -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ company.name }}</h1>
+                    <p class="text-gray-600 mb-2">{{ company.location }}</p>
+                    {% if company.website %}
+                    <a href="{{ company.website }}" target="_blank" class="text-indigo-600 hover:text-indigo-800">
+                        Visit Website →
+                    </a>
+                    {% endif %}
+                </div>
+                {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="w-20 h-20 rounded">
+                {% else %}
+                <div class="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
+                    <span class="text-gray-500 text-lg">{{ company.name|slice:":2"|upper }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Company Description -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">About {{ company.name }}</h2>
+            <p class="text-gray-600">{{ company.description }}</p>
+        </div>
+
+        <!-- Open Positions -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Open Positions ({{ company_jobs.count }})</h2>
+            
+            {% if company_jobs %}
+            <div class="space-y-4">
+                {% for job in company_jobs %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">{{ job.title }}</h3>
+                            <p class="text-gray-600">{{ job.location }}</p>
+                            <p class="text-gray-500 text-sm mt-2">{{ job.description|truncatewords:25 }}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full mb-2">
+                                {{ job.get_job_type_display }}
+                            </span>
+                            {% if job.salary_min and job.salary_max %}
+                            <p class="text-sm text-gray-600">
+                                ${{ job.salary_min|floatformat:0 }}k - ${{ job.salary_max|floatformat:0 }}k
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-gray-500">{{ job.created_at|timesince }} ago</span>
+                        <a href="/jobs/{{ job.id }}/" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                            View Details →
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No open positions</h3>
+                <p class="text-gray-600">Check back later for new opportunities</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
